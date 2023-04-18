@@ -17,6 +17,7 @@ RSpec.describe Dish, type: :model do
     @octopus = Ingredient.create!(name: 'Octopus', calories: 100)
     @batter = Ingredient.create!(name: 'Takoyaki Batter', calories: 200)
     @egg = Ingredient.create!(name: 'Egg', calories: 50)
+    @bonito = Ingredient.create!(name: 'Bonito Flakes', calories: 10)
 
     @tako.ingredients << [@octopus, @batter, @egg]
   end

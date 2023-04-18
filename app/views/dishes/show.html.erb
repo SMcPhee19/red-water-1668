@@ -1,0 +1,25 @@
+<!-- app/views/dishes/show.html.erb -->
+<h1>Dish Show Page</h1>
+<br>
+<div id="dish-info">
+  <h2>Dish Name: <%= @dish.name %></h2>
+  <p>Description: <%= @dish.description%></p>
+
+  <h2>Chef: <%= @dish.chef.name %></h2>
+  <br>
+  <h2>Ingredients</h2>
+  <ul>
+    <% @dish.ingredients.each do |ingredient| %>
+      <li><%= ingredient.name %></li>
+    <% end %>
+  </ul>
+
+  <p> Total Calories: <%= @dish.total_calories %></p>
+</div>
+<div id="add-ingredient">
+  <%= form_with model: @dish, url: dish_path(@dish.id) do |form| %>
+    <%= form.label :ingredient_id %>
+    <%= form.select :ingredient_id, options_from_collection_for_select(@ingredients, :id, :name) %>
+    <%= form.submit %>
+  <% end %>
+</div>
