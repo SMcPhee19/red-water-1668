@@ -2,26 +2,45 @@ require 'rails_helper'
 
 RSpec.describe 'Dish Show Page' do
   before(:each) do
-    @john = Chef.create!(name: 'John Doe')
-    @pasta = @john.dishes.create!(name: 'Spaghetti Bolognese', description: 'Classic Italian pasta dish')
-    @tomato = Ingredient.create!(name: 'Tomato', calories: 20)
-    @beef = Ingredient.create!(name: 'Beef', calories: 100)
-    @spag = Ingredient.create!(name: 'Spaghetti', calories: 200)
+    @masaharu = Chef.create!(name: 'Masaharu Morimoto')
+    @tako = @masaharu.dishes.create!(name: 'Takoyaki', description: 'Quintesential Japanese street food')
+    @octopus = Ingredient.create!(name: 'Octopus', calories: 100)
+    @batter = Ingredient.create!(name: 'Takoyaki Batter', calories: 200)
+    @egg = Ingredient.create!(name: 'Egg', calories: 50)
 
-    @pasta.ingredients << [@tomato, @beef, @spag]
+    @tako.ingredients << [@octopus, @batter, @egg]
   end
 
   it 'shows the dish name and description' do
-    visit dish_path(@pasta)
+    visit dish_path(@tako)
     within '#dish-info' do
-      save_and_open_page
-      expect(page).to have_content(@pasta.name)
-      expect(page).to have_content(@pasta.description)
-      expect(page).to have_content(@pasta.chef.name)
-      expect(page).to have_content(@tomato.name)
-      expect(page).to have_content(@beef.name)
-      expect(page).to have_content(@spag.name)
-      expect(page).to have_content(@pasta.total_calories)
+      expect(page).to have_content(@tako.name)
+      expect(page).to have_content(@tako.description)
+      expect(page).to have_content(@tako.chef.name)
+      expect(page).to have_content(@octopus.name)
+      expect(page).to have_content(@batter.name)
+      expect(page).to have_content(@egg.name)
+      expect(page).to have_content(@tako.total_calories)
     end
+  end
+
+  it 'user can see a form in the dish show page' do
+    visit dish_path(@tako)
+    within '#add-ingredient' do
+      expect(page).to have_content('Add Ingredient')
+      expect(page).to have_field(:ingredient)
+    end
+  end
+
+  it 'user can add an ingredient to the dish' do
+    visit dish_path(@tako)
+    @bonito = Ingredient.create!(name: 'Bonito Flakes', calories: 10)
+
+    within '#add-ingredient' do
+      fill_in :ingredient, with: '@bonito.id'
+      click_button 'Add Ingredient'
+    end
+    expect(current_path).to eq(dish_path(@tako))
+    expect(page).to have_content('Bonito Flakes')
   end
 end

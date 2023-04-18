@@ -12,18 +12,18 @@ RSpec.describe Dish, type: :model do
   end
 
   before(:each) do
-    @john = Chef.create!(name: 'John Doe')
-    @pasta = @john.dishes.create!(name: 'Spaghetti Bolognese', description: 'Classic Italian pasta dish')
-    @tomato = Ingredient.create!(name: 'Tomato', calories: 20)
-    @beef = Ingredient.create!(name: 'Beef', calories: 100)
-    @spag = Ingredient.create!(name: 'Spaghetti', calories: 200)
+    @masaharu = Chef.create!(name: 'Masaharu Morimoto')
+    @tako = @masaharu.dishes.create!(name: 'Takoyaki', description: 'Quintesential Japanese street food')
+    @octopus = Ingredient.create!(name: 'Octopus', calories: 100)
+    @batter = Ingredient.create!(name: 'Takoyaki Batter', calories: 200)
+    @egg = Ingredient.create!(name: 'Egg', calories: 50)
 
-    @pasta.ingredients << [@tomato, @beef, @spag]
+    @tako.ingredients << [@octopus, @batter, @egg]
   end
 
   describe 'instance methods' do
     it '.total_calories' do
-      expect(@pasta.total_calories).to eq(320)
+      expect(@tako.total_calories).to eq(350)
     end
   end
 end
